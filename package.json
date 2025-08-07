@@ -1,0 +1,22 @@
+{
+  "name": "notepad-store",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yulia-94/Notepad-store.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yulia-94/Notepad-store/issues"
+  },
+  "homepage": "https://github.com/Yulia-94/Notepad-store#readme",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.54.2",
+    "@types/node": "^24.2.0"
+  }
+}
