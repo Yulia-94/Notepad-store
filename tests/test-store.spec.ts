@@ -6,16 +6,16 @@ import { CartPage } from '../page-objects/cartPage';
 
 test.beforeEach(async ({ page }) => {
   const loginPage = new LoginPage(page);
+  const storePage = new StorePage(page);
   //авторизация
   await page.goto('https://enotes.pointschool.ru/login');
   await loginPage.login('test', 'test');
-  //проверка имени клиента на странице магазина
-  await expect(page.locator('.text-uppercase')).toHaveText('test');
-  //проверка URL страницы магазина
-  await expect(page).toHaveURL('https://enotes.pointschool.ru/');
+  //проверка имени и URL
+  await storePage.checkAfterLogin()
 });
 
 test('1: go to empty cart', async ({ page }) => {
+  //не работает
   const storePage = new StorePage(page);
   const cartPage = new CartPage(page);
   //нажать на пустую корзину (не работает, если другое flow)
@@ -23,11 +23,11 @@ test('1: go to empty cart', async ({ page }) => {
   //итоговая цена: 0
   await cartPage.totalPriceInCart('0');
   //нажать кнопку перейти в корзину
-  await cartPage.goToCart()
+  await cartPage.goToCart();
   //нажать заготовок 'OK-Notes' (вернуться назад)
-  await storePage.clickOkNotes()
+  await storePage.clickOkNotes();
   //количество товара в корзине на странице магазина = 0
-  await storePage.countProductOnCart('0');
+  await storePage.countProductInCart('0');
 });
 
 test('2: go to cart with 1 non-promotional product', async ({ page }) => {
@@ -36,7 +36,7 @@ test('2: go to cart with 1 non-promotional product', async ({ page }) => {
   //купить нужный товар 'Еженедельники' - второй
   await storePage.buySpecificProduct(1, '', '', '400 р.');
   //количество товара в корзине на странице магазина = 1
-  await storePage.countProductOnCart('1');
+  await storePage.countProductInCart('1');
   //нажать на иконку корзины 
   await storePage.clickCartButton();
   //проверить заголовой, цена, количество товара к корзине
@@ -59,8 +59,8 @@ test('2: go to cart with 1 non-promotional product', async ({ page }) => {
 });
 
 test('3: go to cart with 1 promotional product', async ({ page }) => {
-  const storePage = new StorePage(page)
-  const cartPage = new CartPage(page)
+  const storePage = new StorePage(page);
+  const cartPage = new CartPage(page);
   //выбрать все аукционные товары
   await storePage.showOnlyWithDiscount();
   //нажать на тип товара и выбрать 'Еженедельники'
@@ -68,7 +68,7 @@ test('3: go to cart with 1 promotional product', async ({ page }) => {
   //купить нужный товар 'Еженедельники' - второй
   await storePage.buySpecificProduct(1, '120', '946 р.', '826 р. 946 р.');
   //количество товара в корзине на странице магазина = 1
-  await storePage.countProductOnCart('1');
+  await storePage.countProductInCart('1');
   //нажать на иконку корзины 
   await storePage.clickCartButton();
   //проверить заголовой, цена, количество товара к корзине
@@ -90,7 +90,7 @@ test('3: go to cart with 1 promotional product', async ({ page }) => {
   await cartPage.clearCart();
 });
 
-test('4: go to cart with 9 different products', async ({ page }) => {
+test('4: go to cart with 8 different products', async ({ page }) => {
   const storePage = new StorePage(page)
   const cartPage = new CartPage(page)
   //купить товар 'Кошечка Мари'
@@ -106,7 +106,7 @@ test('4: go to cart with 9 different products', async ({ page }) => {
   //купить товар 'Black&Red'
   await storePage.buySpecificProduct(5, '50', '365 р.', '315 р. 365 р.');
   //количество товара в корзине на странице магазина = 8
-  await storePage.countProductOnCart('8');
+  await storePage.countProductInCart('8');
   //нажать на иконку корзины 
   await storePage.clickCartButton();
 
@@ -139,9 +139,9 @@ test('4: go to cart with 9 different products', async ({ page }) => {
   await cartPage.clearCart();
 });
 
-test('5: go to cart with 9 promotional products of the same name', async ({ page }) => {
-  const storePage = new StorePage(page)
-  const cartPage = new CartPage(page)
+test('5: go to cart with 8 promotional products of the same name', async ({ page }) => {
+  const storePage = new StorePage(page);
+  const cartPage = new CartPage(page);
   //выбрать все аукционные товары
   await storePage.showOnlyWithDiscount();
   //нажать на тип товара и выбрать 'Записные книжки'
@@ -149,7 +149,7 @@ test('5: go to cart with 9 promotional products of the same name', async ({ page
   //купить нужный товар 'Записные книжки'
   await storePage.buySpecificProduct(0, '300', '700 р.', '400 р. 700 р.', 8);
   //количество товара в корзине на странице магазина = 8
-  await storePage.countProductOnCart('8');
+  await storePage.countProductInCart('8');
   //нажать на иконку корзины 
   await storePage.clickCartButton();
   //проверить заголовой, цена, количество товара к корзине

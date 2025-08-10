@@ -24,7 +24,7 @@ export class CartPage {
     }
 
     async checkCartItems(expectedItems: Array<{ title: string; price: string; count: string }>) {
-        await this.page.waitForTimeout(1000)
+        await this.page.waitForTimeout(1000);
         //количество товаров в корзине
         const itemCount = await this.cartItems.count();
         //проверка фактического и ожидаемого количество товаров в корзине
@@ -42,13 +42,13 @@ export class CartPage {
 
     async totalPriceInCart(price: string) {
         //проверка всплывающего окна корзины
-        await expect(this.cartPopup).toBeVisible()
+        await expect(this.cartPopup).toBeVisible();
         //итоговая цена товара
         await expect(this.totalPriceProductsInCart).toHaveText(price);
-
     }
+
     async goToCart() {
-        await this.page.waitForTimeout(100)
+        await this.page.waitForTimeout(100);
         await this.goToCartButton.click({ force: true });
         await expect(this.page).toHaveURL('https://enotes.pointschool.ru/basket');
     }
